@@ -10,7 +10,6 @@ function Login({ setLogin }: { setLogin: (p:string) => void }) {
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     signInWithPopup(auth, provider).then((response) => {
-      console.log(response);
       setLogin(response.user.displayName as string);
       dispatch(user(response.user));
       navigate('/home');
