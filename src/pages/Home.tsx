@@ -11,26 +11,22 @@ function Home() {
     const arquivo = document.querySelector('[name=arquivo]').files[0];
     const storageRef = ref(storage, `imagens/${arquivo.name}`);
     const uploadTask = uploadBytesResumable(storageRef, arquivo);
-    const envioST = () => {
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
-        },
-      );
-    };
-    const envioBD = () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-        addDoc(collection(db, 'Users'), {
-          imageUrl: downloadUrl,
-          userId: user.uid,
-          imageName: arquivo.name,
-        });
-      });
-    };
-    envioST();
-    envioBD();
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+        if (progress === 100) {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+            addDoc(collection(db, 'Users'), {
+              imageUrl: downloadUrl,
+              userId: user.uid,
+              imageName: arquivo.name,
+            });
+          });
+        }
+      },
+    );
   };
   return (
     <div>
