@@ -8,7 +8,7 @@ function Login({ setLogin }: { setLogin: (p:string) => void }) {
     e.preventDefault();
     signInWithPopup(auth, provider).then((response) => {
       console.log(response);
-      setLogin(response.user.email as string);
+      setLogin(response.user.displayName as string);
       navigate('/home');
     });
   };

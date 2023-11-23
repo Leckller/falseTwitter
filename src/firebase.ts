@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -9,19 +10,19 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
 
-  apiKey: 'AIzaSyAWcSd8cQ9nFSZbAZ61jUUbKZvZTKvjJj4',
+  apiKey: 'AIzaSyC9W-cWWkb-FFwzQD9AHKzqA5GOFNFGbQw',
 
-  authDomain: 'twitteruy-cde36.firebaseapp.com',
+  authDomain: 'twitteruy-a43a4.firebaseapp.com',
 
-  projectId: 'twitteruy-cde36',
+  projectId: 'twitteruy-a43a4',
 
-  storageBucket: 'twitteruy-cde36.appspot.com',
+  storageBucket: 'twitteruy-a43a4.appspot.com',
 
-  messagingSenderId: '3441631061',
+  messagingSenderId: '647947380352',
 
-  appId: '1:3441631061:web:94adcc00fda1ba315419dc',
+  appId: '1:647947380352:web:8595ef05e2aafb092fa865',
 
-  measurementId: 'G-C9BPPGRSBS',
+  measurementId: 'G-N3KSS41JC0',
 
 };
 
@@ -31,7 +32,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const storage = getStorage(app);
 
-export { auth, provider };
-
-export default db;
+export { auth, provider, db, storage };
