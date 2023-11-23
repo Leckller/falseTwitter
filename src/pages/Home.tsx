@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { addDoc, collection, doc, onSnapshot, query } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { db, storage } from '../firebase';
@@ -9,29 +10,25 @@ import { posts } from '../redux/actions/ActionPosts';
 function Home() {
   const { user } = useSelector((state:GlobalState) => state.UserReducer);
   const [imgTwt, setImgTwt] = useState(false);
-  const [SubmitForm, setSubmitForm] = useState({
-    arquivo: { name: '' },
+  const [returnPosts, setReturnPosts] = useState<PostsType[]>([]);
+  const [SubmitForm, setSubmitForm] = useState<{
+    text: string,
+    arquivo: File,
+  }>({
+    arquivo: {} as File,
     text: '',
   });
   const dispatch = useDispatch();
   useEffect(() => {
-    const q = query(collection(db, 'Posts'));
-    onSnapshot(q, (querySnapshot) => {
-      const PostsArray:PostsType[] = [];
-      querySnapshot.forEach((u) => {
-        PostsArray.push(u.data());
-      });
-      console.log(PostsArray);
-      dispatch(posts(PostsArray));
-    });
-  }, []);
+    dispatch(posts(returnPosts));
+    console.log(returnPosts);
+  }, [returnPosts]);
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { arquivo, text } = SubmitForm;
     const storageRef = ref(storage, `imagens/${arquivo.name}`);
     const uploadTask = uploadBytesResumable(storageRef, arquivo);
-    console.log(arquivo.name);
     if (!imgTwt) {
       addDoc(collection(db, 'Posts'), {
         imageUrl: '',
@@ -40,6 +37,14 @@ function Home() {
         text,
         userName: user.displayName,
       });
+      console.log('enviado');
+      const q = query(collection(db, 'Posts'));
+      const up = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((u) => {
+          setReturnPosts([...returnPosts, u.data() as PostsType]);
+        });
+      });
+      up();
     }
     if (imgTwt) {
       setImgTwt(false);
@@ -61,6 +66,13 @@ function Home() {
           }
         },
       );
+      const q = query(collection(db, 'Posts'));
+      const up = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((u) => {
+          setReturnPosts([...returnPosts, u.data() as PostsType]);
+        });
+      });
+      up();
     }
   };
   return (
@@ -70,8 +82,12 @@ function Home() {
         <input
           type="file"
           name="arquivo"
-          onClick={ () => setImgTwt(true) }
-          onChange={ (e) => setSubmitForm({ ...SubmitForm, arquivo: e.target.files[0] }) }
+          onClick={ () => {
+            setImgTwt(true);
+          } }
+          onChange={ (e) => {
+            setSubmitForm({ ...SubmitForm, arquivo: e.target.files[0] });
+          } }
         />
         <input
           type="text"
