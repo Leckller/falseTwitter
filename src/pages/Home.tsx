@@ -1,18 +1,36 @@
-import { useState } from 'react';
-import { ref, uploadBytesResumable } from 'firebase/storage';
-import { storage } from '../firebase';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
+import { db, storage } from '../firebase';
+import { GlobalState } from '../types';
 
 function Home() {
-  const [files, setFiles] = useState([]);
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { user } = useSelector((state:GlobalState) => state.UserReducer);
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const arquivo = document.querySelector('[name=arquivo]').files[0];
     const storageRef = ref(storage, `imagens/${arquivo.name}`);
     const uploadTask = uploadBytesResumable(storageRef, arquivo);
-    uploadTask.on('state_changed', (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(`Upload is ${progress}% done`);
-    });
+    const envioST = () => {
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        },
+      );
+    };
+    const envioBD = () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+        addDoc(collection(db, 'Users'), {
+          imageUrl: downloadUrl,
+          userId: user.uid,
+          imageName: arquivo.name,
+        });
+      });
+    };
+    envioST();
+    envioBD();
   };
   return (
     <div>
