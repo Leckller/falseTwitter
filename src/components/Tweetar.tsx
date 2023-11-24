@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../firebase';
 import { GlobalState } from '../types';
+import { TweetStyle } from '../Styles/Styles';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-function Tweet({ setClose, close }: { close: boolean, setClose: (p: boolean) => void }) {
+function Tweetar({ setClose, close }: {
+  close: boolean, setClose: (p: boolean) => void }) {
   const { user } = useSelector((state:GlobalState) => state.UserReducer);
   const [SubmitForm, setSubmitForm] = useState<{ text: string, arquivo: File }>(
     { arquivo: {} as File, text: '' },
@@ -21,16 +23,21 @@ function Tweet({ setClose, close }: { close: boolean, setClose: (p: boolean) => 
       text: SubmitForm.text,
       userName: user.displayName,
     });
+    setSubmitForm({
+      arquivo: {} as File,
+      text: '',
+    });
+    setClose(!close);
   };
   return (
-    <div>
+    <TweetStyle>
       <div>
         <button onClick={ () => setClose(!close) }>X</button>
       </div>
       <div>
         <label htmlFor="textAreaTweet">
-          O que está acontecendo?
           <textarea
+            maxLength={ 350 }
             name="Tweet"
             id="textAreaTweet"
             onChange={ (e) => setSubmitForm({ ...SubmitForm, text: e.target.value }) }
@@ -38,13 +45,18 @@ function Tweet({ setClose, close }: { close: boolean, setClose: (p: boolean) => 
         </label>
       </div>
       <form onSubmit={ handleOnSubmit }>
-        <label htmlFor="arquivo">
-          <input id="arquivo" type="file" />
-        </label>
-        <button>Postar</button>
+        <div>
+          <label htmlFor="arquivo">
+            Image
+            <input id="arquivo" type="file" />
+          </label>
+        </div>
+        <div>
+          <button type="submit">Postar</button>
+        </div>
       </form>
-    </div>
+    </TweetStyle>
   );
 }
 
-export default Tweet;
+export default Tweetar;

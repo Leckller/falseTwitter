@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { AnyAction } from 'redux';
 import { POSTS } from '../actions/ActionPosts';
 
