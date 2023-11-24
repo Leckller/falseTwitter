@@ -1,9 +1,10 @@
+/* eslint-disable import/no-named-as-default */
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { collection, getDocs, query } from 'firebase/firestore';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
@@ -14,10 +15,14 @@ import { HomeStyle } from '../Styles/Styles';
 function Home() {
   const [close, setClose] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state:GlobalState) => state.UserReducer);
   const { globalPosts } = useSelector((state:GlobalState) => state.PostsReducer);
   console.log(globalPosts);
   useEffect(() => {
     // dispatch(posts(returnPosts));
+    const data = new Date().toJSON();
+    console.log(data);
     const effect = async () => {
       const q = query(collection(db, 'Posts'));
       const querySnapshot = await getDocs(q);
@@ -29,6 +34,45 @@ function Home() {
     };
     if (close) effect();
   }, [close]);
+  if (window.innerWidth <= 550) {
+    return (
+      <HomeStyle close={ close }>
+        <header>
+          <button><img src={ user.photoURL } alt={ user.displayName } /></button>
+          <button onClick={ () => navigate('/home') }>X</button>
+          <button>C</button>
+        </header>
+        <main>
+          {globalPosts && globalPosts.map((actP, i) => (
+            <article key={ actP.userName + i }>
+              <img src={ actP.userImg } alt="user" />
+              <div>
+                <Link to={ `/user/${actP.userName}` }>
+                  <h3>{actP.userName}</h3>
+                </Link>
+                <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+              </div>
+              <p>{actP.text}</p>
+              <div />
+            </article>
+          ))}
+          {close === true ? (
+            <button onClick={ () => setClose(!close) }>T</button>
+          ) : (
+            <Tweetar close={ close } setClose={ setClose } />
+          )}
+        </main>
+        <footer>
+          <nav>
+            <NavLink to="/home">home</NavLink>
+            <NavLink to="/home">Search</NavLink>
+            <NavLink to="/home">not</NavLink>
+            <NavLink to="/home">mess</NavLink>
+          </nav>
+        </footer>
+      </HomeStyle>
+    );
+  }
   return (
     <HomeStyle close={ close }>
       <header>
@@ -57,9 +101,12 @@ function Home() {
           <div>
             {globalPosts && globalPosts.map((actP, i) => (
               <article key={ actP.userName + i }>
-                <Link to={ `/user/${actP.userName}` }>
-                  <h3>{actP.userName}</h3>
-                </Link>
+                <div>
+                  <Link to={ `/user/${actP.userName}` }>
+                    <h3>{actP.userName}</h3>
+                  </Link>
+                  <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                </div>
                 <p>{actP.text}</p>
                 <div />
               </article>
