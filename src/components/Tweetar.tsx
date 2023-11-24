@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../firebase';
 import { GlobalState, PostsType } from '../types';
-import { TweetStyle } from '../Styles/Styles';
 import RandomIdFunction from '../utils/RandomIdFunction';
+import { TweetDivBody, TweetDivButton, TweetDivForm,
+  TweetDivHeader, TweetDivText } from '../Styles/TweetStyles';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function Tweetar({ setClose, close }: {
@@ -36,12 +37,12 @@ function Tweetar({ setClose, close }: {
   };
   if (window.innerWidth <= 550) {
     return (
-      <TweetStyle>
-        <div>
-          <button onClick={ () => setClose(!close) }>X</button>
-          <button type="submit">Postar</button>
-        </div>
-        <div>
+      <TweetDivBody>
+        <TweetDivHeader>
+          <TweetDivButton onClick={ () => setClose(!close) }>X</TweetDivButton>
+          <TweetDivButton type="submit">Postar</TweetDivButton>
+        </TweetDivHeader>
+        <TweetDivText>
           <label htmlFor="textAreaTweet">
             <textarea
               maxLength={ 350 }
@@ -50,18 +51,20 @@ function Tweetar({ setClose, close }: {
               onChange={ (e) => setSubmitForm({ ...SubmitForm, text: e.target.value }) }
             />
           </label>
-        </div>
-        <div>
-          <label htmlFor="arquivo">
-            Image
-            <input id="arquivo" type="file" />
-          </label>
-        </div>
-      </TweetStyle>
+        </TweetDivText>
+        <TweetDivForm>
+          <form onSubmit={ (e) => handleOnSubmit(e) }>
+            <label htmlFor="arquivo">
+              Image
+              <input id="arquivo" type="file" />
+            </label>
+          </form>
+        </TweetDivForm>
+      </TweetDivBody>
     );
   }
   return (
-    <TweetStyle>
+    <TweetDivBody>
       <div>
         <button onClick={ () => setClose(!close) }>X</button>
       </div>
@@ -86,7 +89,7 @@ function Tweetar({ setClose, close }: {
           <button type="submit">Postar</button>
         </div>
       </form>
-    </TweetStyle>
+    </TweetDivBody>
   );
 }
 

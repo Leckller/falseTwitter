@@ -11,6 +11,7 @@ import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
 import { HomeStyle } from '../Styles/Styles';
+import { HomeDivBody, HomeFooter, HomeHeader, HomeMain } from '../Styles/HomeStyles';
 
 function Home() {
   const [close, setClose] = useState(true);
@@ -36,13 +37,13 @@ function Home() {
   }, [close]);
   if (window.innerWidth <= 550) {
     return (
-      <HomeStyle close={ close }>
-        <header>
+      <HomeDivBody>
+        <HomeHeader>
           <button><img src={ user.photoURL } alt={ user.displayName } /></button>
           <button onClick={ () => navigate('/home') }>X</button>
           <button>C</button>
-        </header>
-        <main>
+        </HomeHeader>
+        <HomeMain>
           {globalPosts && globalPosts.map((actP, i) => (
             <article key={ actP.userName + i }>
               <img src={ actP.userImg } alt="user" />
@@ -61,16 +62,16 @@ function Home() {
           ) : (
             <Tweetar close={ close } setClose={ setClose } />
           )}
-        </main>
-        <footer>
+        </HomeMain>
+        <HomeFooter>
           <nav>
             <NavLink to="/home">home</NavLink>
             <NavLink to="/home">Search</NavLink>
             <NavLink to="/home">not</NavLink>
             <NavLink to="/home">mess</NavLink>
           </nav>
-        </footer>
-      </HomeStyle>
+        </HomeFooter>
+      </HomeDivBody>
     );
   }
   return (
