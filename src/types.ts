@@ -1,5 +1,3 @@
-import store from './redux';
-
 export type PostsType = {
   text: string,
   imgUrl?: string,
@@ -8,4 +6,11 @@ export type PostsType = {
   userId: string,
 };
 
-export type GlobalState = ReturnType<typeof store.getState>;
+export type GlobalState = {
+  UserReducer: {
+    user: any,
+  }
+  PostsReducer: {
+    globalPosts: PostsType[],
+  }
+};

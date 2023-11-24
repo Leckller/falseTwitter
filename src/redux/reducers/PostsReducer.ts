@@ -3,13 +3,13 @@ import { AnyAction } from 'redux';
 import { POSTS } from '../actions/ActionPosts';
 
 const STATE = {
-  posts: [],
+  globalPosts: [],
 };
 
 const PostsReducer = (state = STATE, action:AnyAction) => {
   switch (action.type) {
     case POSTS: {
-      return { ...state, posts: [...action.payload] };
+      return { ...state, globalPosts: [...action.payload] };
     }
     default: {
       return { ...state };
