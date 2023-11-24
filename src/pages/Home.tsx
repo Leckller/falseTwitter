@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { collection, getDocs, query } from 'firebase/firestore';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
@@ -57,8 +57,11 @@ function Home() {
           <div>
             {globalPosts && globalPosts.map((actP, i) => (
               <article key={ actP.userName + i }>
-                <h3>{actP.userName}</h3>
+                <Link to={ `/user/${actP.userName}` }>
+                  <h3>{actP.userName}</h3>
+                </Link>
                 <p>{actP.text}</p>
+                <div />
               </article>
             ))}
           </div>

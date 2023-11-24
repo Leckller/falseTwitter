@@ -103,11 +103,11 @@ main{
   flex-direction: row;
   section:nth-child(1){
     width: 50%;
+    /* min-width: 600px; */
     border: solid #151719 1px;
     div:nth-child(1){
       width: 100%;
       height: 150px;
-      border-bottom: solid #151719 1px;
       padding-top: 10px;
       label{
         padding: 10px;
@@ -121,6 +121,17 @@ main{
         }
       }
     }
+    div:nth-child(2){
+      article{
+        padding: 10px;
+        min-height: 100px;
+        border-top: solid #151719 1px;
+        border-bottom: solid #151719 1px;
+      }
+    }
+  }
+  section:nth-child(2){
+    width: 50%;
   }
 }
 `;
