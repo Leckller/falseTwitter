@@ -34,6 +34,8 @@ export const HomeMain = styled.main`
   @media (max-width: 550px) {
     width: 100vw;
     height: 88vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     article{
       border-top: solid #151719 px;
       border-bottom: solid #151719 1px;
@@ -71,6 +73,10 @@ export const HomeButtonT = styled.button`
   border: none;
 `;
 
+export const HomeDivDefaultBox = styled.div`
+  width: 100%;
+`;
+
 export const HomeDivArticleLinks = styled.div`
   width: 100%;
   display: flex;
@@ -83,7 +89,12 @@ export const HomeDivArticleLinks = styled.div`
 `;
 
 export const HomeDivArticleText = styled.div`
-
+  width: 100%;
+  text-align: start;
+  p{
+    width: 100%;
+    word-break: break-all;
+  }
 `;
 
 export const HomeFooter = styled.footer`

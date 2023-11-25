@@ -11,6 +11,7 @@ import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
 import { HomeButtonT, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+  HomeDivDefaultBox,
   HomeFooter, HomeHeader, HomeMain } from '../Styles/HomeStyles';
 
 function Home() {
@@ -49,7 +50,7 @@ function Home() {
               <button onClick={ () => navigate(`/user/${actP.userName}`) }>
                 <img src={ actP.userImg } alt="user" />
               </button>
-              <div>
+              <HomeDivDefaultBox>
                 <HomeDivArticleLinks>
                   <Link to={ `/user/${actP.userName}` }>
                     <h3>{actP.userName}</h3>
@@ -59,7 +60,7 @@ function Home() {
                 <HomeDivArticleText>
                   <p>{actP.text}</p>
                 </HomeDivArticleText>
-              </div>
+              </HomeDivDefaultBox>
             </article>
           ))}
           {close === true ? (
