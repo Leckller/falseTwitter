@@ -10,8 +10,8 @@ import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
-import { HomeStyle } from '../Styles/Styles';
-import { HomeDivBody, HomeFooter, HomeHeader, HomeMain } from '../Styles/HomeStyles';
+import { HomeButtonT, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+  HomeFooter, HomeHeader, HomeMain } from '../Styles/HomeStyles';
 
 function Home() {
   const [close, setClose] = useState(true);
@@ -46,19 +46,24 @@ function Home() {
         <HomeMain>
           {globalPosts && globalPosts.map((actP, i) => (
             <article key={ actP.userName + i }>
-              <img src={ actP.userImg } alt="user" />
+              <button onClick={ () => navigate(`/user/${actP.userName}`) }>
+                <img src={ actP.userImg } alt="user" />
+              </button>
               <div>
-                <Link to={ `/user/${actP.userName}` }>
-                  <h3>{actP.userName}</h3>
-                </Link>
-                <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                <HomeDivArticleLinks>
+                  <Link to={ `/user/${actP.userName}` }>
+                    <h3>{actP.userName}</h3>
+                  </Link>
+                  <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                </HomeDivArticleLinks>
+                <HomeDivArticleText>
+                  <p>{actP.text}</p>
+                </HomeDivArticleText>
               </div>
-              <p>{actP.text}</p>
-              <div />
             </article>
           ))}
           {close === true ? (
-            <button onClick={ () => setClose(!close) }>T</button>
+            <HomeButtonT onClick={ () => setClose(!close) }>T</HomeButtonT>
           ) : (
             <Tweetar close={ close } setClose={ setClose } />
           )}
@@ -75,7 +80,7 @@ function Home() {
     );
   }
   return (
-    <HomeStyle close={ close }>
+    <HomeDivBody>
       <header>
         <nav>
           <NavLink to="/home">X</NavLink>
@@ -127,7 +132,7 @@ function Home() {
           </div>
         </section>
       </main>
-    </HomeStyle>
+    </HomeDivBody>
   );
 }
 

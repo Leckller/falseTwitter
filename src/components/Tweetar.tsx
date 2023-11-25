@@ -2,9 +2,9 @@ import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../firebase';
-import { GlobalState, PostsType } from '../types';
+import { GlobalState } from '../types';
 import RandomIdFunction from '../utils/RandomIdFunction';
-import { TweetDivBody, TweetDivButton, TweetDivForm,
+import { TweetDivBody, TweetDivForm,
   TweetDivHeader, TweetDivText } from '../Styles/TweetStyles';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -15,7 +15,8 @@ function Tweetar({ setClose, close }: {
     { arquivo: {} as File, text: '' },
   );
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     // Envio Tweet sem foto
     const data = new Date().toJSON();
@@ -39,15 +40,17 @@ function Tweetar({ setClose, close }: {
     return (
       <TweetDivBody>
         <TweetDivHeader>
-          <TweetDivButton onClick={ () => setClose(!close) }>X</TweetDivButton>
-          <TweetDivButton type="submit">Postar</TweetDivButton>
+          <button onClick={ () => setClose(!close) }>X</button>
+          <button onClick={ (e) => handleOnSubmit(e) } type="submit">Postar</button>
         </TweetDivHeader>
         <TweetDivText>
           <label htmlFor="textAreaTweet">
             <textarea
+              placeholder="O que está acontecendo?"
               maxLength={ 350 }
               name="Tweet"
               id="textAreaTweet"
+              rows={ 20 }
               onChange={ (e) => setSubmitForm({ ...SubmitForm, text: e.target.value }) }
             />
           </label>

@@ -35,20 +35,55 @@ export const HomeMain = styled.main`
     width: 100vw;
     height: 88vh;
     article{
-      border-top: solid #151719 1px;
+      border-top: solid #151719 px;
       border-bottom: solid #151719 1px;
       padding: 15px;
       width: 100%;
-      min-height: 150px;
+      min-height: 120px;
       display: flex;
       flex-flow: nowrap row;
-      img{
+      button{
+        background-color: transparent;
+        border: none;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+        cursor: pointer;
+        img{
         width: 40px;
         height: 40px;
         border-radius: 666px;
       }
+      }
     }
   }
+`;
+
+export const HomeButtonT = styled.button`
+  position: absolute;
+  right: 30px;
+  bottom: 8vh;
+  width: 50px;
+  height: 50px;
+  border-radius: 666px;
+  background-color: #0088ff;
+  font-weight: 600;
+  border: none;
+`;
+
+export const HomeDivArticleLinks = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: space-between;
+  padding: 3px 0;
+  a{
+    text-decoration: none;
+  }
+`;
+
+export const HomeDivArticleText = styled.div`
+
 `;
 
 export const HomeFooter = styled.footer`
