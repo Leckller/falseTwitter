@@ -10,7 +10,9 @@ import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
-import { HomeButtonT, HomeDivArticleContent0, HomeDivArticleContent1, HomeDivArticleContent2, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+import { HomeButtonT, HomeDivArticleContent0,
+  HomeDivArticleContent1, HomeDivArticleContent2,
+  HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
   HomeDivBodyDesk,
   HomeDivDefaultBox,
   HomeFooter, HomeHeader, HomeHeaderDesk,
