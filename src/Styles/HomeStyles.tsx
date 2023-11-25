@@ -8,12 +8,12 @@ flex-flow: nowrap row;
 `;
 
 export const HomeHeaderDesk = styled.header`
-  width: 20vw;
+  width: 30vw;
   display: flex;
   justify-content: center;
   padding-top: 20px;
   nav{
-    width: 80%;
+    width: 70%;
     display: flex;
     flex-flow: nowrap column;
     align-items: start;
@@ -27,6 +27,85 @@ export const HomeHeaderDesk = styled.header`
     }
   }
 `;
+
+export const HomeMainDesk = styled.main`
+  width: 70vw;
+  display: flex;
+  flex-flow: nowrap row;
+`;
+
+export const HomeMainDivText = styled.div`
+  label{
+    textarea{
+      resize: none;
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      height: 100px;
+    }
+  }
+`;
+
+export const HomeMainDivPosts = styled.div`
+  article{
+      border-top: solid #151719 1px;
+      border-bottom: solid #151719 1px;
+      padding: 15px;
+      width: 100%;
+      min-height: 120px;
+      display: flex;
+      flex-flow: nowrap row;
+      button{
+        background-color: transparent;
+        border: none;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+        cursor: pointer;
+        img{
+        width: 40px;
+        height: 40px;
+        border-radius: 666px;
+      }
+    }
+  }
+`;
+
+export const HomeDivArticleContent0 = styled.div`
+  width: 100%;
+`;
+
+export const HomeDivArticleContent1 = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: space-between;
+  padding: 3px 0;
+  a{
+    text-decoration: none;
+  }
+`;
+export const HomeDivArticleContent2 = styled.div`
+  width: 100%;
+  text-align: start;
+  p{
+    width: 100%;
+    word-break: break-all;
+  }
+`;
+
+export const HomeSectionDesk = styled.section`
+  width: 50%;
+  border: solid #151719 1px;
+  padding: 10px;
+`;
+
+export const HomeAsideDesk = styled.section`
+  width: 50%;
+`;
+
+// Mobile //
 
 export const HomeDivBody = styled.div`
   @media (max-width: 550px) {

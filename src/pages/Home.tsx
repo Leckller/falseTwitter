@@ -10,10 +10,12 @@ import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
-import { HomeButtonT, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+import { HomeButtonT, HomeDivArticleContent0, HomeDivArticleContent1, HomeDivArticleContent2, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
   HomeDivBodyDesk,
   HomeDivDefaultBox,
-  HomeFooter, HomeHeader, HomeHeaderDesk, HomeMain } from '../Styles/HomeStyles';
+  HomeFooter, HomeHeader, HomeHeaderDesk,
+  HomeMain, HomeMainDesk, HomeMainDivPosts,
+  HomeMainDivText, HomeSectionDesk } from '../Styles/HomeStyles';
 
 function Home() {
   const [close, setClose] = useState(true);
@@ -42,7 +44,7 @@ function Home() {
       <HomeDivBody>
         <HomeHeader>
           <button><img src={ user.photoURL } alt={ user.displayName } /></button>
-          <button onClick={ () => navigate('/home') }>X</button>
+          <button onClick={ () => navigate('/home') }>ruytter</button>
           <button>C</button>
         </HomeHeader>
         <HomeMain>
@@ -94,34 +96,41 @@ function Home() {
           )}
         </nav>
       </HomeHeaderDesk>
-      <HomeMain>
-        <section>
-          <div>
+      <HomeMainDesk>
+        <HomeSectionDesk>
+          <HomeMainDivText>
             <label htmlFor="textAreaTweet">
               <textarea
+                placeholder="O que está acontecendo?"
                 maxLength={ 350 }
                 name="Tweet"
                 id="textAreaTweet"
                 // onChange={ (e) => setSubmitForm({ ...SubmitForm, text: e.target.value }) }
               />
             </label>
-          </div>
-          <div>
+          </HomeMainDivText>
+          <HomeMainDivPosts>
             {globalPosts && globalPosts.map((actP, i) => (
               <article key={ actP.userName + i }>
-                <div>
-                  <Link to={ `/user/${actP.userName}` }>
-                    <h3>{actP.userName}</h3>
-                  </Link>
-                  <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
-                </div>
-                <p>{actP.text}</p>
-                <div />
+                <button onClick={ () => navigate(`/user/${actP.userName}`) }>
+                  <img src={ actP.userImg } alt="user" />
+                </button>
+                <HomeDivArticleContent0>
+                  <HomeDivArticleContent1>
+                    <Link to={ `/user/${actP.userName}` }>
+                      <h3>{actP.userName}</h3>
+                    </Link>
+                    <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                  </HomeDivArticleContent1>
+                  <HomeDivArticleContent2>
+                    <p>{actP.text}</p>
+                  </HomeDivArticleContent2>
+                </HomeDivArticleContent0>
               </article>
             ))}
-          </div>
-        </section>
-        <section>
+          </HomeMainDivPosts>
+        </HomeSectionDesk>
+        <HomeHeaderDesk>
           <div>
             <label htmlFor="search">
               Buscar
@@ -132,8 +141,8 @@ function Home() {
             Quem seguir
             {[]}
           </div>
-        </section>
-      </HomeMain>
+        </HomeHeaderDesk>
+      </HomeMainDesk>
     </HomeDivBodyDesk>
   );
 }
