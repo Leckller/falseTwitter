@@ -11,8 +11,9 @@ import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
 import { HomeButtonT, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+  HomeDivBodyDesk,
   HomeDivDefaultBox,
-  HomeFooter, HomeHeader, HomeMain } from '../Styles/HomeStyles';
+  HomeFooter, HomeHeader, HomeHeaderDesk, HomeMain } from '../Styles/HomeStyles';
 
 function Home() {
   const [close, setClose] = useState(true);
@@ -81,8 +82,8 @@ function Home() {
     );
   }
   return (
-    <HomeDivBody>
-      <header>
+    <HomeDivBodyDesk>
+      <HomeHeaderDesk>
         <nav>
           <NavLink to="/home">X</NavLink>
           <NavLink to="/home">Página Inicial</NavLink>
@@ -92,8 +93,8 @@ function Home() {
             <Tweetar close={ close } setClose={ setClose } />
           )}
         </nav>
-      </header>
-      <main>
+      </HomeHeaderDesk>
+      <HomeMain>
         <section>
           <div>
             <label htmlFor="textAreaTweet">
@@ -132,8 +133,8 @@ function Home() {
             {[]}
           </div>
         </section>
-      </main>
-    </HomeDivBody>
+      </HomeMain>
+    </HomeDivBodyDesk>
   );
 }
 

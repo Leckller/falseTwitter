@@ -1,5 +1,33 @@
 import styled from 'styled-components';
 
+export const HomeDivBodyDesk = styled.div`
+width: 100vw;
+height: 100vh;
+display: flex;
+flex-flow: nowrap row;
+`;
+
+export const HomeHeaderDesk = styled.header`
+  width: 20vw;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  nav{
+    width: 80%;
+    display: flex;
+    flex-flow: nowrap column;
+    align-items: start;
+    gap: 20px;
+    a{
+      text-decoration: none;
+    }
+    button{
+      background-color: transparent;
+      border: none;
+    }
+  }
+`;
+
 export const HomeDivBody = styled.div`
   @media (max-width: 550px) {
     
@@ -9,7 +37,7 @@ export const HomeDivBody = styled.div`
 export const HomeHeader = styled.header`
   @media (max-width: 550px) {
     display: flex;
-    height: 7vh;
+    height: 50px;
     flex-flow: nowrap row;
     align-items: center;
     justify-content: space-between;
@@ -31,13 +59,14 @@ export const HomeHeader = styled.header`
 `;
 
 export const HomeMain = styled.main`
+  width: 80vw;
   @media (max-width: 550px) {
     width: 100vw;
     height: 88vh;
     overflow-y: auto;
     overflow-x: hidden;
     article{
-      border-top: solid #151719 px;
+      border-top: solid #151719 1px;
       border-bottom: solid #151719 1px;
       padding: 15px;
       width: 100%;
