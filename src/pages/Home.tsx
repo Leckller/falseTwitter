@@ -2,10 +2,11 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react-hooks/exhaustive-deps */
+import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { editPost, posts } from '../redux/actions/ActionPosts';
@@ -25,11 +26,9 @@ function Home() {
   const navigate = useNavigate();
   const { user } = useSelector((state:GlobalState) => state.UserReducer);
   const [close, setClose] = useState(true);
+  const [reload, setReload] = useState(false);
   const { globalPosts } = useSelector((state:GlobalState) => state.PostsReducer);
   useEffect(() => {
-    // dispatch(posts(returnPosts));
-    // const data = new Date();
-    // console.log([data.toDateString().split(' '), data.toLocaleTimeString()]);
     const effect = async () => {
       const q = query(collection(db, 'Posts'));
       const querySnapshot = await getDocs(q);
@@ -40,7 +39,22 @@ function Home() {
       dispatch(posts(allPosts));
     };
     if (close) effect();
-  }, [close]);
+  }, [close, reload]);
+
+  const likeEvent = async (id: string, likes: string[], userId: string) => {
+    const postRef = doc(db, 'Posts', id);
+    if (likes.some((u) => u === userId)) {
+      await updateDoc(postRef, {
+        likes: likes.filter((u) => u !== userId),
+      });
+    }
+    if (!likes.some((u) => u === userId)) {
+      await updateDoc(postRef, {
+        likes: [...likes, userId],
+      });
+    }
+  };
+
   if (window.innerWidth <= 550) {
     return (
       <HomeDivBody>
@@ -77,6 +91,26 @@ function Home() {
                 </HomeDivArticleLinks>
                 <HomeDivArticleText>
                   <p>{actP.text}</p>
+                  <div>
+                    <Link to={ `/post/${actP.postId}` }>c</Link>
+                    <label htmlFor="like">
+                      <button
+                        onClick={ () => {
+                          likeEvent(actP.postId, actP.likes, user.uid);
+                          setTimeout(() => {
+                            setReload(!reload);
+                          }, (500));
+                        } }
+                        id="like"
+                      >
+                        {actP.likes.includes(user.uid) ? (
+                          <BsSuitHeartFill />
+                        ) : (
+                          <BsSuitHeart />
+                        )}
+                      </button>
+                    </label>
+                  </div>
                 </HomeDivArticleText>
               </HomeDivDefaultBox>
             </article>

@@ -31,7 +31,7 @@ function Tweetar({ setClose, close }: {
       postId: idPost,
       data: JSON.stringify(dataRef),
       userImg: user.photoURL,
-      likes: 0,
+      likes: [],
       edit: false,
     });
     // método para adicionar sem especificar o nome do objeto

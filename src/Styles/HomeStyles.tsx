@@ -185,7 +185,7 @@ export const HomeDivDefaultBox = styled.div`
   width: 100%;
   position: relative;
   button:nth-child(1){
-    width: 20px;
+    width: 25px;
     height: 20px;
     position: absolute;
     right: 0;
@@ -215,9 +215,20 @@ export const HomeDivArticleLinks = styled.div`
 export const HomeDivArticleText = styled.div`
   width: 100%;
   text-align: start;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  justify-content: space-between;
   p{
     width: 100%;
     word-break: break-all;
+  }
+  div{
+    padding-top: 10px;
+    width: 100%;
+    a{
+      text-decoration: none;
+    }
   }
 `;
 
