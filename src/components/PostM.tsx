@@ -3,6 +3,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsChatSquareDots, BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { SlOptionsVertical } from 'react-icons/sl';
 import { GlobalState, PostsType } from '../types';
 import { editPost } from '../redux/actions/ActionPosts';
 
@@ -20,31 +21,41 @@ function PostM({ actP, likeEvent, reload, setReload }: { actP: PostsType, likeEv
 
         <div className="flex flex-row w-1/2 items-center">
 
-          <button className="w-10" onClick={ () => navigate(`/user/${actP.userName}`) }>
+          <button
+            className="w-10 ml-5"
+            onClick={ () => navigate(`/user/${actP.userName}`) }
+          >
             <img className="rounded-full" src={ actP.userImg } alt="user" />
           </button>
-          <Link to={ `/user/${actP.userName}` }>
+          <Link className="mb-5 mt-5 ml-2" to={ `/user/${actP.userName}` }>
             <h3>{actP.userName}</h3>
           </Link>
+
         </div>
 
-        <div className="flex flex-row w-1/2 justify-end items-center">
+        <div className="flex flex-row w-1/2 relative justify-end items-center">
 
           <h6>{JSON.parse(actP.data)[1]}</h6>
           {actP.edit ? (
-            <div className="">
+            <div
+              className="absolute bg-black h-28 right-8 border-4
+              border-gray-900 top-5 w-96
+              flex justify-between p-5
+              "
+            >
+              <div className="flex flex-col items-start">
+                <button>Apagar Post</button>
+                <button>Compartilhar Post</button>
+              </div>
               <button className="" onClick={ () => dispatch(editPost(actP)) }>
                 X
               </button>
-              <button>Apagar Post</button>
-              <button>Compartilhar Post</button>
             </div>
           ) : (
             <button className="w-8" onClick={ () => dispatch(editPost(actP)) }>
-              :
+              <SlOptionsVertical />
             </button>
           )}
-
         </div>
 
       </div>
@@ -56,17 +67,18 @@ function PostM({ actP, likeEvent, reload, setReload }: { actP: PostsType, likeEv
         <div className="flex flex-row w-full justify-around pt-4 pb-2">
 
           {loc === 'post' ? (
-            <button>
+            <button className="w-10">
               <BsChatSquareDots />
             </button>
           ) : (
-            <Link to={ `/post/${actP.postId}` }>
+            <Link className="w-10" to={ `/post/${actP.postId}` }>
               <BsChatSquareDots />
             </Link>
           )}
-          <label htmlFor="like">
-            {/* {actP.likes.length} */}
+          <label htmlFor="like" className="flex items-center">
+            <h6 className="pr-2">{actP.likes.length}</h6>
             <button
+              className="w-10"
               onClick={ () => {
                 likeEvent(actP.postId, actP.likes, user.uid);
                 setTimeout(() => {
