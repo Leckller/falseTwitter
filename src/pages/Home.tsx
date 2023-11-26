@@ -2,24 +2,21 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
-import { editPost, posts } from '../redux/actions/ActionPosts';
+import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
 import { HomeButtonT, HomeDivArticleContent0,
   HomeDivArticleContent1, HomeDivArticleContent2,
-  HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
   HomeDivBodyDesk,
-  HomeDivDefaultBox,
-  HomeDivOptionsPost,
-  HomeFooter, HomeHeader, HomeHeaderDesk,
-  HomeMain, HomeMainDesk, HomeMainDivPosts,
+  HomeHeaderDesk, HomeMainDesk, HomeMainDivPosts,
   HomeMainDivText, HomeSectionDesk } from '../Styles/HomeStyles';
+import PostM from '../components/PostM';
+import likeEvent from '../utils/LikeEventFunction';
 
 function Home() {
   const dispatch = useDispatch();
@@ -41,95 +38,55 @@ function Home() {
     if (close) effect();
   }, [close, reload]);
 
-  const likeEvent = async (id: string, likes: string[], userId: string) => {
-    const postRef = doc(db, 'Posts', id);
-    if (likes.some((u) => u === userId)) {
-      await updateDoc(postRef, {
-        likes: likes.filter((u) => u !== userId),
-      });
-    }
-    if (!likes.some((u) => u === userId)) {
-      await updateDoc(postRef, {
-        likes: [...likes, userId],
-      });
-    }
-  };
-
   if (window.innerWidth <= 550) {
     return (
-      <HomeDivBody>
-        <HomeHeader>
-          <button><img src={ user.photoURL } alt={ user.displayName } /></button>
-          <button onClick={ () => navigate('/home') }>ruytter</button>
-          <button>C</button>
-        </HomeHeader>
-        <HomeMain>
-          {globalPosts && globalPosts.map((actP, i) => (
-            <article key={ actP.userName + i }>
-              <button onClick={ () => navigate(`/user/${actP.userName}`) }>
-                <img src={ actP.userImg } alt="user" />
-              </button>
-              <HomeDivDefaultBox>
-                {actP.edit ? (
-                  <HomeDivOptionsPost>
-                    <button onClick={ () => dispatch(editPost(actP)) }>
-                      X
-                    </button>
-                    <button>Apagar Post</button>
-                    <button>Compartilhar Post</button>
-                  </HomeDivOptionsPost>
-                ) : (
-                  <button onClick={ () => dispatch(editPost(actP)) }>
-                    :
-                  </button>
-                )}
-                <HomeDivArticleLinks>
-                  <Link to={ `/user/${actP.userName}` }>
-                    <h3>{actP.userName}</h3>
-                  </Link>
-                  <h6>{JSON.parse(actP.data)[1]}</h6>
-                </HomeDivArticleLinks>
-                <HomeDivArticleText>
-                  <p>{actP.text}</p>
-                  <div>
-                    <Link to={ `/post/${actP.postId}` }>c</Link>
-                    <label htmlFor="like">
-                      <button
-                        onClick={ () => {
-                          likeEvent(actP.postId, actP.likes, user.uid);
-                          setTimeout(() => {
-                            setReload(!reload);
-                          }, (500));
-                        } }
-                        id="like"
-                      >
-                        {actP.likes.includes(user.uid) ? (
-                          <BsSuitHeartFill />
-                        ) : (
-                          <BsSuitHeart />
-                        )}
-                      </button>
-                    </label>
-                  </div>
-                </HomeDivArticleText>
-              </HomeDivDefaultBox>
-            </article>
+      <div className="w-screen">
+        <header className="flex flex-row justify-between p-2 w-screen">
+          <button className="w-10">
+            <img
+              className="rounded-full"
+              src={ user.photoURL }
+              alt={ user.displayName }
+            />
+          </button>
+          <button
+            className="w-10"
+            onClick={ () => navigate('/home') }
+          >
+            ruytter
+
+          </button>
+          <button
+            className="w-10"
+          >
+            C
+          </button>
+        </header>
+        <main>
+          {globalPosts && globalPosts.map((actP) => (
+            <PostM
+              key={ actP.postId }
+              actP={ actP }
+              likeEvent={ likeEvent }
+              reload={ reload }
+              setReload={ setReload }
+            />
           ))}
           {close === true ? (
             <HomeButtonT onClick={ () => setClose(!close) }>T</HomeButtonT>
           ) : (
             <Tweetar close={ close } setClose={ setClose } />
           )}
-        </HomeMain>
-        <HomeFooter>
+        </main>
+        <footer>
           <nav>
             <NavLink to="/home">home</NavLink>
             <NavLink to="/home">Search</NavLink>
             <NavLink to="/home">not</NavLink>
             <NavLink to="/home">mess</NavLink>
           </nav>
-        </HomeFooter>
-      </HomeDivBody>
+        </footer>
+      </div>
     );
   }
   return (

@@ -8,6 +8,8 @@ import FZF from './pages/FZF';
 import { auth } from './firebase';
 import { user } from './redux/actions/ActionUser';
 import { GlobalStyle } from './Styles/Styles';
+import Post from './pages/Post';
+import './index.css';
 
 function App() {
   const [login, setLogin] = useState<string | null>(null);
@@ -37,6 +39,7 @@ function App() {
       <Routes>
         <Route path="/" element={ <Login setLogin={ setLogin } /> } />
         <Route path="/home" element={ <Home /> } />
+        <Route path="/post/:id" element={ <Post /> } />
         <Route path="*" element={ <FZF /> } />
       </Routes>
     </>
