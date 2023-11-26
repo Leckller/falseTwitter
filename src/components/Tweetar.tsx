@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../firebase';
@@ -15,21 +15,37 @@ function Tweetar({ setClose, close }: {
     { arquivo: {} as File, text: '' },
   );
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>
   | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     // Envio Tweet sem foto
-    const data = new Date().toJSON();
-    addDoc(collection(db, 'Posts'), {
+    const idPost = RandomIdFunction();
+    const data = new Date();
+    const dataRef = [data.toDateString().split(' '), data.toLocaleTimeString()];
+    await setDoc(doc(db, 'Posts', idPost), {
       imageUrl: '',
       userId: user.uid,
       altImg: '',
       text: SubmitForm.text,
       userName: user.displayName,
-      postId: RandomIdFunction(),
-      data,
+      postId: idPost,
+      data: JSON.stringify(dataRef),
       userImg: user.photoURL,
+      likes: 0,
+      edit: false,
     });
+    // método para adicionar sem especificar o nome do objeto
+    //   addDoc(collection(db, 'Posts'), {
+    //     imageUrl: '',
+    //     userId: user.uid,
+    //     altImg: '',
+    //     text: SubmitForm.text,
+    //     userName: user.displayName,
+    //     postId: RandomIdFunction(),
+    //     data,
+    //     userImg: user.photoURL,
+    //     likes: [],
+    //   });
     setSubmitForm({
       arquivo: {} as File,
       text: '',

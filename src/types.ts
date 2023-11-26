@@ -7,6 +7,8 @@ export type PostsType = {
   postId: string,
   data: string,
   userImg: string,
+  edit: boolean,
+  likes: number,
 };
 
 export type GlobalState = {

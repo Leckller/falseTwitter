@@ -8,28 +8,28 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { collection, getDocs, query } from 'firebase/firestore';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
-import { posts } from '../redux/actions/ActionPosts';
+import { editPost, posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
 import { HomeButtonT, HomeDivArticleContent0,
   HomeDivArticleContent1, HomeDivArticleContent2,
   HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
   HomeDivBodyDesk,
   HomeDivDefaultBox,
+  HomeDivOptionsPost,
   HomeFooter, HomeHeader, HomeHeaderDesk,
   HomeMain, HomeMainDesk, HomeMainDivPosts,
   HomeMainDivText, HomeSectionDesk } from '../Styles/HomeStyles';
 
 function Home() {
-  const [close, setClose] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state:GlobalState) => state.UserReducer);
+  const [close, setClose] = useState(true);
   const { globalPosts } = useSelector((state:GlobalState) => state.PostsReducer);
-  console.log(globalPosts);
   useEffect(() => {
     // dispatch(posts(returnPosts));
-    const data = new Date().toJSON();
-    console.log(data);
+    // const data = new Date();
+    // console.log([data.toDateString().split(' '), data.toLocaleTimeString()]);
     const effect = async () => {
       const q = query(collection(db, 'Posts'));
       const querySnapshot = await getDocs(q);
@@ -56,11 +56,24 @@ function Home() {
                 <img src={ actP.userImg } alt="user" />
               </button>
               <HomeDivDefaultBox>
+                {actP.edit ? (
+                  <HomeDivOptionsPost>
+                    <button onClick={ () => dispatch(editPost(actP)) }>
+                      X
+                    </button>
+                    <button>Apagar Post</button>
+                    <button>Compartilhar Post</button>
+                  </HomeDivOptionsPost>
+                ) : (
+                  <button onClick={ () => dispatch(editPost(actP)) }>
+                    :
+                  </button>
+                )}
                 <HomeDivArticleLinks>
                   <Link to={ `/user/${actP.userName}` }>
                     <h3>{actP.userName}</h3>
                   </Link>
-                  <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                  <h6>{JSON.parse(actP.data)[1]}</h6>
                 </HomeDivArticleLinks>
                 <HomeDivArticleText>
                   <p>{actP.text}</p>
@@ -122,7 +135,7 @@ function Home() {
                     <Link to={ `/user/${actP.userName}` }>
                       <h3>{actP.userName}</h3>
                     </Link>
-                    <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                    <h6>{actP.data[1]}</h6>
                   </HomeDivArticleContent1>
                   <HomeDivArticleContent2>
                     <p>{actP.text}</p>

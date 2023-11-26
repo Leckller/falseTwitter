@@ -183,10 +183,26 @@ export const HomeButtonT = styled.button`
 
 export const HomeDivDefaultBox = styled.div`
   width: 100%;
+  position: relative;
+  button:nth-child(1){
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+  }
+`;
+
+export const HomeDivOptionsPost = styled.div`
+  position: absolute;
+  background-color: #171616;
+  width: 90%;
+  height: 150px;
+  display: flex;
+  flex-flow: nowrap column;
 `;
 
 export const HomeDivArticleLinks = styled.div`
-  width: 100%;
+  width: 85%;
   display: flex;
   flex-flow: nowrap row;
   justify-content: space-between;
