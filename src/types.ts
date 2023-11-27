@@ -20,3 +20,9 @@ export type GlobalState = {
     globalPosts: PostsType[],
   }
 };
+
+export type UserType = {
+  uid: string,
+  email: string,
+  displayName: string,
+};
