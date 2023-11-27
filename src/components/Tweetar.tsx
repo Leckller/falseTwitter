@@ -9,7 +9,6 @@ function Tweetar({ setClose, close }: {
     return (
       <TweetM
         close={ close }
-        handleOnSubmit={ handleOnSubmit }
         setClose={ setClose }
       />
     );
