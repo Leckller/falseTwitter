@@ -1,30 +1,59 @@
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { IoArrowUndoOutline } from 'react-icons/io5';
 import { GlobalState, PostsType } from '../types';
-import { PostDivBodyM, PostDivComentsM } from '../Styles/PostStyles';
 import PostM from '../components/PostM';
-import likeEvent from '../utils/LikeEventFunction';
+import { db } from '../firebase';
+import { posts } from '../redux/actions/ActionPosts';
 
 function Post() {
   const loc = useLocation().pathname.split('/')[2];
   const [reload, setReload] = useState(false);
-  const posts = useSelector((state:GlobalState) => state.PostsReducer.globalPosts);
-  const post = posts.find((p) => p.postId === loc);
+  const postsAr = useSelector((state:GlobalState) => state.PostsReducer.globalPosts);
+  const post = postsAr.find((p) => p.postId === loc);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const effect = async () => {
+      const q = query(collection(db, 'Posts'));
+      const querySnapshot = await getDocs(q);
+      const allPosts:PostsType[] = [];
+      querySnapshot.forEach((resp) => {
+        allPosts.push(resp.data() as PostsType);
+      });
+      dispatch(posts(allPosts));
+    };
+    if (reload) effect();
+  }, [reload]);
   return (
-    <PostDivBodyM>
-      <PostM
-        actP={ post as PostsType }
-        likeEvent={ likeEvent }
-        reload={ reload }
-        setReload={ setReload }
-      />
-      <PostDivComentsM>
-        <article>
-          <img src="" alt="" />
-        </article>
-      </PostDivComentsM>
-    </PostDivBodyM>
+    <div>
+      <section>
+        <div className="w-screen p-5">
+          <button onClick={ () => navigate(-1) }>
+            <IoArrowUndoOutline />
+          </button>
+        </div>
+        <PostM
+          actP={ post as PostsType }
+          reload={ reload }
+          setReload={ setReload }
+        />
+      </section>
+      <section>
+        {post?.coments && post.coments.map((info) => (
+          <PostM
+            key={ info.postId }
+            actP={ info }
+            reload={ reload }
+            setReload={ setReload }
+          />
+        ))}
+      </section>
+    </div>
   );
 }
 

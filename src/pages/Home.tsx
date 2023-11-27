@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -5,18 +6,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { collection, doc, getDocs, query, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, query } from 'firebase/firestore';
+import { FaGear, FaMessage } from 'react-icons/fa6';
+import { FaHome, FaSearch } from 'react-icons/fa';
+import { IoNotificationsSharp } from 'react-icons/io5';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
-import { HomeButtonT, HomeDivArticleContent0,
+import { HomeDivArticleContent0,
   HomeDivArticleContent1, HomeDivArticleContent2,
   HomeDivBodyDesk,
   HomeHeaderDesk, HomeMainDesk, HomeMainDivPosts,
   HomeMainDivText, HomeSectionDesk } from '../Styles/HomeStyles';
 import PostM from '../components/PostM';
-import likeEvent from '../utils/LikeEventFunction';
+import TweetM from '../components/TweetM';
 
 function Home() {
   const dispatch = useDispatch();
@@ -59,31 +63,45 @@ function Home() {
           <button
             className="w-10"
           >
-            C
+            <FaGear />
           </button>
         </header>
-        <main>
-          {globalPosts && globalPosts.map((actP) => (
-            <PostM
-              key={ actP.postId }
-              actP={ actP }
-              likeEvent={ likeEvent }
-              reload={ reload }
-              setReload={ setReload }
-            />
-          ))}
-          {close === true ? (
-            <HomeButtonT onClick={ () => setClose(!close) }>T</HomeButtonT>
-          ) : (
-            <Tweetar close={ close } setClose={ setClose } />
-          )}
+        <main className="h-full relative">
+          <section>
+            {globalPosts && globalPosts.map((actP) => (
+              <PostM
+                key={ actP.postId }
+                actP={ actP }
+                reload={ reload }
+                setReload={ setReload }
+              />
+            ))}
+          </section>
         </main>
-        <footer>
-          <nav>
-            <NavLink to="/home">home</NavLink>
-            <NavLink to="/home">Search</NavLink>
-            <NavLink to="/home">not</NavLink>
-            <NavLink to="/home">mess</NavLink>
+        {close === true ? (
+          <button
+            className="absolute w-16 h-16 flex items-center
+                justify-center
+                text-lg
+                rounded-full
+              bg-blue-500 bottom-24 right-5"
+            onClick={ () => setClose(!close) }
+          >
+            T
+          </button>
+
+        ) : (
+          <TweetM
+            close={ close }
+            setClose={ setClose }
+          />
+        )}
+        <footer className="h-16 bg-black fixed bottom-0 w-screen flex items-center">
+          <nav className="w-full flex flex-row justify-around">
+            <NavLink to="/home"><FaHome /></NavLink>
+            <NavLink to="/home"><FaSearch /></NavLink>
+            <NavLink to="/home"><IoNotificationsSharp /></NavLink>
+            <NavLink to="/home"><FaMessage /></NavLink>
           </nav>
         </footer>
       </div>

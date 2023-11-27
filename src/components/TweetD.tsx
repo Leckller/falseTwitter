@@ -1,14 +1,19 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useState } from 'react';
 import { TweetDivBody } from '../Styles/TweetStyles';
+import useUser from '../hooks/useUser';
 
-function TweetD({ setClose, close, handleOnSubmit, setSubmitForm, SubmitForm }: {
+function TweetD({ setClose, close, handleOnSubmit }: {
   setClose: (p: boolean) => void, close: boolean, handleOnSubmit: (e
   : React.FormEvent<HTMLFormElement>
-  | React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  , setSubmitForm: (p: { text: string, arquivo: File }) => void
-  , SubmitForm: { text: string, arquivo: File }
+  | React.MouseEvent<HTMLButtonElement, MouseEvent>, SubmitForm: {
+      arquivo: File, text: string
+    }, user: any) => void
 }) {
+  const user = useUser();
+  const [SubmitForm, setSubmitForm] = useState<{ text: string, arquivo: File }>(
+    { arquivo: {} as File, text: '' },
+  );
   return (
     <TweetDivBody>
       <div>
@@ -24,7 +29,7 @@ function TweetD({ setClose, close, handleOnSubmit, setSubmitForm, SubmitForm }: 
           />
         </label>
       </div>
-      <form onSubmit={ handleOnSubmit }>
+      <form onSubmit={ (e) => handleOnSubmit(e, SubmitForm, user) }>
         <div>
           <label htmlFor="arquivo">
             Image

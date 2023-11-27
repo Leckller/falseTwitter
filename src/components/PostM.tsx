@@ -1,22 +1,28 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable react/jsx-max-depth */
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsChatSquareDots, BsSuitHeart, BsSuitHeartFill } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SlOptionsVertical } from 'react-icons/sl';
-import { GlobalState, PostsType } from '../types';
+import { useEffect, useState } from 'react';
+import { PostsType } from '../types';
 import { editPost } from '../redux/actions/ActionPosts';
+import useUser from '../hooks/useUser';
+import TweetComentM from './TweetComentM';
+import likeEvent from '../utils/LikeEventFunction';
 
-function PostM({ actP, likeEvent, reload, setReload }: { actP: PostsType, likeEvent: (
-  id: string, likes: string[], userId: string
-) => void, setReload: (p:boolean) => void, reload: boolean }) {
-  const { user } = useSelector((state:GlobalState) => state.UserReducer);
+function PostM({ actP, reload, setReload }: { actP: PostsType,
+  setReload: (p:boolean) => void, reload: boolean }) {
+  const user = useUser();
+  const [tweet, setTweet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loc = useLocation().pathname.split('/')[1];
+  useEffect(() => {}, [tweet]);
   return (
-    <article className="border-t border-gray-900 border-b">
-
+    <article
+      className="border-t border-gray-900 border-b"
+    >
       <div className="w-screen relative flex flex-row justify-between">
 
         <div className="flex flex-row w-1/2 items-center">
@@ -60,20 +66,30 @@ function PostM({ actP, likeEvent, reload, setReload }: { actP: PostsType, likeEv
 
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col relative">
 
-        <p className="break-all pl-5 pr-5">{actP.text}</p>
+        <button
+          onClick={ () => navigate(`/post/${actP.postId}`) }
+          className="text-start"
+        >
+          <p className="break-all pl-5 pr-5">{actP.text}</p>
 
+        </button>
         <div className="flex flex-row w-full justify-around pt-4 pb-2">
 
-          {loc === 'post' ? (
-            <button className="w-10">
-              <BsChatSquareDots />
-            </button>
+          <button onClick={ () => setTweet(true) } className="w-10">
+            <BsChatSquareDots />
+          </button>
+          {tweet ? (
+            <TweetComentM
+              reload={ reload }
+              setReload={ setReload }
+              id={ actP.postId }
+              setClose={ setTweet }
+              coments={ actP.coments }
+            />
           ) : (
-            <Link className="w-10" to={ `/post/${actP.postId}` }>
-              <BsChatSquareDots />
-            </Link>
+            ''
           )}
           <label htmlFor="like" className="flex items-center">
             <h6 className="pr-2">{actP.likes.length}</h6>

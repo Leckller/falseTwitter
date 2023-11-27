@@ -1,41 +1,42 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { TweetDivBody, TweetDivForm,
-  TweetDivHeader, TweetDivText } from '../Styles/TweetStyles';
+import { useState } from 'react';
+import handleOnSubmit from '../utils/tweetFunction';
+import useUser from '../hooks/useUser';
 
-function TweetM({ setClose, close, handleOnSubmit, setSubmitForm, SubmitForm }: {
-  setClose: (p: boolean) => void, close: boolean, handleOnSubmit: (e
-  : React.FormEvent<HTMLFormElement>
-  | React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  , setSubmitForm: (p: { text: string, arquivo: File }) => void
-  , SubmitForm: { text: string, arquivo: File }
+function TweetM({ setClose, close }: {
+  setClose: (p: boolean) => void, close: boolean,
 }) {
+  const [submitForm, setSubmitForm] = useState<{ text: string, arquivo: File }>(
+    { arquivo: {} as File, text: '' },
+  );
+  const user = useUser();
   return (
-    <TweetDivBody>
-      <TweetDivHeader>
+    <div
+      className="w-screen h-screen z-10 bg-black border-8
+   border-gray-900 absolute top-0 flex flex-col items-center"
+    >
+      <div className="w-full flex flex-row justify-between pt-3 pb-3 pl-5 pr-5">
         <button onClick={ () => setClose(!close) }>X</button>
-        <button onClick={ (e) => handleOnSubmit(e) } type="submit">Postar</button>
-      </TweetDivHeader>
-      <TweetDivText>
-        <label htmlFor="textAreaTweet">
-          <textarea
-            placeholder="O que está acontecendo?"
-            maxLength={ 350 }
-            name="Tweet"
-            id="textAreaTweet"
-            rows={ 20 }
-            onChange={ (e) => setSubmitForm({ ...SubmitForm, text: e.target.value }) }
-          />
-        </label>
-      </TweetDivText>
-      <TweetDivForm>
-        <form onSubmit={ (e) => handleOnSubmit(e) }>
-          <label htmlFor="arquivo">
-            Image
-            <input id="arquivo" type="file" />
-          </label>
-        </form>
-      </TweetDivForm>
-    </TweetDivBody>
+        <button
+          onClick={ (e) => {
+            handleOnSubmit(e, submitForm, user);
+            setClose(!close);
+          } }
+        >
+          Postar
+
+        </button>
+      </div>
+      <div className="w-full h-full p-3">
+        <textarea
+          onChange={ (e) => setSubmitForm({ ...submitForm, text: e.target.value }) }
+          placeholder="O que está acontecendo?"
+          className="w-full h-full bg-transparent border-none outline-none"
+          name="textArea"
+          id="textarea"
+        />
+      </div>
+    </div>
   );
 }
 
