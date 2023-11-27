@@ -183,10 +183,26 @@ export const HomeButtonT = styled.button`
 
 export const HomeDivDefaultBox = styled.div`
   width: 100%;
+  position: relative;
+  button:nth-child(1){
+    width: 25px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+  }
+`;
+
+export const HomeDivOptionsPost = styled.div`
+  position: absolute;
+  background-color: #171616;
+  width: 90%;
+  height: 150px;
+  display: flex;
+  flex-flow: nowrap column;
 `;
 
 export const HomeDivArticleLinks = styled.div`
-  width: 100%;
+  width: 85%;
   display: flex;
   flex-flow: nowrap row;
   justify-content: space-between;
@@ -199,9 +215,20 @@ export const HomeDivArticleLinks = styled.div`
 export const HomeDivArticleText = styled.div`
   width: 100%;
   text-align: start;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  justify-content: space-between;
   p{
     width: 100%;
     word-break: break-all;
+  }
+  div{
+    padding-top: 10px;
+    width: 100%;
+    a{
+      text-decoration: none;
+    }
   }
 `;
 

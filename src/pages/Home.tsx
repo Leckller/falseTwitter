@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -6,28 +7,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { collection, getDocs, query } from 'firebase/firestore';
+import { FaGear, FaMessage } from 'react-icons/fa6';
+import { FaHome, FaSearch } from 'react-icons/fa';
+import { IoNotificationsSharp } from 'react-icons/io5';
 import Tweetar from '../components/Tweetar';
 import { db } from '../firebase';
 import { posts } from '../redux/actions/ActionPosts';
 import { GlobalState, PostsType } from '../types';
-import { HomeButtonT, HomeDivArticleContent0, HomeDivArticleContent1, HomeDivArticleContent2, HomeDivArticleLinks, HomeDivArticleText, HomeDivBody,
+import { HomeDivArticleContent0,
+  HomeDivArticleContent1, HomeDivArticleContent2,
   HomeDivBodyDesk,
-  HomeDivDefaultBox,
-  HomeFooter, HomeHeader, HomeHeaderDesk,
-  HomeMain, HomeMainDesk, HomeMainDivPosts,
+  HomeHeaderDesk, HomeMainDesk, HomeMainDivPosts,
   HomeMainDivText, HomeSectionDesk } from '../Styles/HomeStyles';
+import PostM from '../components/PostM';
+import TweetM from '../components/TweetM';
 
 function Home() {
-  const [close, setClose] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state:GlobalState) => state.UserReducer);
+  const [close, setClose] = useState(true);
+  const [reload, setReload] = useState(false);
   const { globalPosts } = useSelector((state:GlobalState) => state.PostsReducer);
-  console.log(globalPosts);
   useEffect(() => {
-    // dispatch(posts(returnPosts));
-    const data = new Date().toJSON();
-    console.log(data);
     const effect = async () => {
       const q = query(collection(db, 'Posts'));
       const querySnapshot = await getDocs(q);
@@ -38,49 +40,71 @@ function Home() {
       dispatch(posts(allPosts));
     };
     if (close) effect();
-  }, [close]);
+  }, [close, reload]);
+
   if (window.innerWidth <= 550) {
     return (
-      <HomeDivBody>
-        <HomeHeader>
-          <button><img src={ user.photoURL } alt={ user.displayName } /></button>
-          <button onClick={ () => navigate('/home') }>ruytter</button>
-          <button>C</button>
-        </HomeHeader>
-        <HomeMain>
-          {globalPosts && globalPosts.map((actP, i) => (
-            <article key={ actP.userName + i }>
-              <button onClick={ () => navigate(`/user/${actP.userName}`) }>
-                <img src={ actP.userImg } alt="user" />
-              </button>
-              <HomeDivDefaultBox>
-                <HomeDivArticleLinks>
-                  <Link to={ `/user/${actP.userName}` }>
-                    <h3>{actP.userName}</h3>
-                  </Link>
-                  <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
-                </HomeDivArticleLinks>
-                <HomeDivArticleText>
-                  <p>{actP.text}</p>
-                </HomeDivArticleText>
-              </HomeDivDefaultBox>
-            </article>
-          ))}
-          {close === true ? (
-            <HomeButtonT onClick={ () => setClose(!close) }>T</HomeButtonT>
-          ) : (
-            <Tweetar close={ close } setClose={ setClose } />
-          )}
-        </HomeMain>
-        <HomeFooter>
-          <nav>
-            <NavLink to="/home">home</NavLink>
-            <NavLink to="/home">Search</NavLink>
-            <NavLink to="/home">not</NavLink>
-            <NavLink to="/home">mess</NavLink>
+      <div className="w-screen">
+        <header className="flex flex-row justify-between p-2 w-screen">
+          <button className="w-10">
+            <img
+              className="rounded-full"
+              src={ user.photoURL }
+              alt={ user.displayName }
+            />
+          </button>
+          <button
+            className="w-10"
+            onClick={ () => navigate('/home') }
+          >
+            ruytter
+
+          </button>
+          <button
+            className="w-10"
+          >
+            <FaGear />
+          </button>
+        </header>
+        <main className="h-full relative">
+          <section>
+            {globalPosts && globalPosts.map((actP) => (
+              <PostM
+                key={ actP.postId }
+                actP={ actP }
+                reload={ reload }
+                setReload={ setReload }
+              />
+            ))}
+          </section>
+        </main>
+        {close === true ? (
+          <button
+            className="absolute w-16 h-16 flex items-center
+                justify-center
+                text-lg
+                rounded-full
+              bg-blue-500 bottom-24 right-5"
+            onClick={ () => setClose(!close) }
+          >
+            T
+          </button>
+
+        ) : (
+          <TweetM
+            close={ close }
+            setClose={ setClose }
+          />
+        )}
+        <footer className="h-16 bg-black fixed bottom-0 w-screen flex items-center">
+          <nav className="w-full flex flex-row justify-around">
+            <NavLink to="/home"><FaHome /></NavLink>
+            <NavLink to="/home"><FaSearch /></NavLink>
+            <NavLink to="/home"><IoNotificationsSharp /></NavLink>
+            <NavLink to="/home"><FaMessage /></NavLink>
           </nav>
-        </HomeFooter>
-      </HomeDivBody>
+        </footer>
+      </div>
     );
   }
   return (
@@ -120,7 +144,7 @@ function Home() {
                     <Link to={ `/user/${actP.userName}` }>
                       <h3>{actP.userName}</h3>
                     </Link>
-                    <h6>{actP.data.split('T')[1].split('.')[0]}</h6>
+                    <h6>{actP.data[1]}</h6>
                   </HomeDivArticleContent1>
                   <HomeDivArticleContent2>
                     <p>{actP.text}</p>
