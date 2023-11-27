@@ -10,6 +10,7 @@ import { user } from './redux/actions/ActionUser';
 import { GlobalStyle } from './Styles/Styles';
 import Post from './pages/Post';
 import './index.css';
+import User from './pages/User';
 
 function App() {
   const [login, setLogin] = useState<string | null>(null);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/home" element={ <Home /> } />
         <Route path="/post/:id" element={ <Post /> } />
         <Route path="*" element={ <FZF /> } />
+        <Route path="/user/:id" element={ <User /> } />
       </Routes>
     </>
   );

@@ -74,7 +74,7 @@ function Home() {
       </main>
       {close === true ? (
         <button
-          className="absolute w-16 h-16 flex items-center
+          className="fixed w-16 h-16 flex items-center
                 justify-center
                 text-lg
                 rounded-full
