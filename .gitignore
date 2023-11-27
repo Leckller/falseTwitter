@@ -12,10 +12,7 @@ coverage
 dist
 dist-ssr
 *.local
-src/utils/RandomIdFunction.ts
 src/firebase.ts
-/home/ruy/FrontEndRuy/TwitteRuy/src/utils
-/home/ruy/FrontEndRuy/TwitteRuy/src/utils/tweetFunction.ts
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
