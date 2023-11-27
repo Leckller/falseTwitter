@@ -80,7 +80,11 @@ function PostM({ actP, reload, setReload }: { actP: PostsType,
         </button>
         <div className="flex flex-row w-full justify-around pt-4 pb-2">
 
-          <button onClick={ () => setTweet(true) } className="w-10">
+          <button
+            onClick={ () => setTweet(true) }
+            className="w-12 flex flex-row items-center"
+          >
+            <h6 className="pr-2">{actP.coments.length}</h6>
             <BsChatSquareDots />
           </button>
           {tweet ? (
@@ -97,7 +101,7 @@ function PostM({ actP, reload, setReload }: { actP: PostsType,
           <label htmlFor="like" className="flex items-center">
             <h6 className="pr-2">{actP.likes.length}</h6>
             <button
-              className="w-10"
+              className="w-12"
               onClick={ () => {
                 likeEvent(actP.postId, actP.likes, user.uid);
                 setTimeout(() => {
