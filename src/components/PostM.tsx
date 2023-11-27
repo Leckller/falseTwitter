@@ -30,11 +30,11 @@ function PostM({ actP, reload, setReload }: { actP: PostsType,
 
           <button
             className="w-10 ml-5"
-            onClick={ () => navigate(`/user/${actP.userName}`) }
+            onClick={ () => navigate(`/user/${actP.userId}`) }
           >
             <img className="rounded-full" src={ actP.userImg } alt="user" />
           </button>
-          <Link className="mb-5 mt-5 ml-2" to={ `/user/${actP.userName}` }>
+          <Link className="mb-5 mt-5 ml-2" to={ `/user/${actP.userId}` }>
             <h3>{actP.userName}</h3>
           </Link>
 
