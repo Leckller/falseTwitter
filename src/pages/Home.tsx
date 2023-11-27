@@ -66,7 +66,7 @@ function Home() {
             <FaGear />
           </button>
         </header>
-        <main className="h-full relative">
+        <main className="h-full relative pb-20">
           <section>
             {globalPosts && globalPosts.map((actP) => (
               <PostM
