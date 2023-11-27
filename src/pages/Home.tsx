@@ -40,7 +40,7 @@ function Home() {
   return (
     <div className="w-screen">
       <header className="flex flex-row justify-between p-2 w-screen">
-        <button className="w-10">
+        <button className="w-10" onClick={ () => navigate(`/user/${user.uid}`) }>
           <img
             className="rounded-full"
             src={ user.photoURL }
