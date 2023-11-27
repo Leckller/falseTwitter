@@ -46,14 +46,17 @@ function PostM({ actP, reload, setReload }: { actP: PostsType,
             <div
               className="absolute bg-black h-28 right-8 border-4
               border-gray-900 top-5 w-96
-              flex justify-between p-5
+              flex justify-between p-5 z-50
               "
             >
               <div className="flex flex-col items-start">
                 <button>Apagar Post</button>
                 <button>Compartilhar Post</button>
               </div>
-              <button className="" onClick={ () => dispatch(editPost(actP)) }>
+              <button
+                className="absolute right-5"
+                onClick={ () => dispatch(editPost(actP)) }
+              >
                 X
               </button>
             </div>
