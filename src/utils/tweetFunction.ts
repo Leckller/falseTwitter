@@ -12,7 +12,6 @@ const handleOnSubmit = async (
   // Envio Tweet sem foto
   const idPost = RandomIdFunction();
   const data = new Date();
-  const dataRef = [data.toDateString().split(' '), data.toLocaleTimeString()];
   await setDoc(doc(db, 'Posts', idPost), {
     imageUrl: '',
     userId: user.uid,
@@ -20,7 +19,7 @@ const handleOnSubmit = async (
     text: SubmitForm.text,
     userName: user.displayName,
     postId: idPost,
-    data: JSON.stringify(dataRef),
+    data: JSON.stringify(data),
     userImg: user.photoURL,
     likes: [],
     edit: false,
