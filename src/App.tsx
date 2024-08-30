@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { json, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
@@ -15,6 +15,7 @@ import User from './pages/User';
 function App() {
   const [login, setLogin] = useState<string | null>(null);
   const dispatch = useDispatch();
+
   useEffect(() => {
     onAuthStateChanged(auth, async (usuario) => {
       setLogin(usuario?.displayName as string);

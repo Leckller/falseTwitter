@@ -29,21 +29,18 @@ const organizador = (ps: PostsType[]) => {
     const bdia = +bcalendario[2];
 
     if (bano > aano) {
-      console.log('ano');
       return 1;
     }
     if (aano > bano) {
       return -1;
     }
     if (bmes > ames) {
-      console.log('mes');
       return 1;
     }
     if (ames > bmes) {
       return -1;
     }
     if (bdia > adia) {
-      console.log('dia');
       return 1;
     }
     if (adia > bdia) {
@@ -53,14 +50,12 @@ const organizador = (ps: PostsType[]) => {
       return -1;
     }
     if (bhora > ahora) {
-      console.log('hora');
       return 1;
     }
     if (amin > bmin) {
       return -1;
     }
     if (bmin > amin) {
-      console.log('min');
       return 1;
     }
 
