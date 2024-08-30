@@ -42,7 +42,7 @@ function PostM({ actP, reload, setReload }: { actP: PostsType,
 
         <div className="flex flex-row w-1/2 relative justify-end items-center">
 
-          <h6>{JSON.parse(actP.data)[1]}</h6>
+          <h6>{JSON.parse(actP.data)}</h6>
           {actP.edit ? (
             actP.userId === user.uid ? (
               <div
