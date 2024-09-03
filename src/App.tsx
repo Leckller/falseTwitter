@@ -9,8 +9,8 @@ import { auth } from './firebase';
 import { user } from './redux/actions/ActionUser';
 import { GlobalStyle } from './Styles/Styles';
 import Post from './pages/Post';
-import './index.css';
 import User from './pages/User';
+import './index.css';
 import Layout from './components/Layout/Layout';
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, async (usuario) => {
       setLogin(usuario?.displayName as string);
+      localStorage.setItem('userPass', JSON.stringify(usuario));
       dispatch(user(usuario));
     });
   }, []);
@@ -36,8 +37,8 @@ function App() {
           <Route path="/home" element={ <Home /> } />
         </Route>
         <Route path="/post/:id" element={ <Post /> } />
-        <Route path="*" element={ <NotFound /> } />
         <Route path="/user/:id" element={ <User /> } />
+        <Route path="*" element={ <NotFound /> } />
       </Routes>
     </>
   );
